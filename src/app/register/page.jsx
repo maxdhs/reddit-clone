@@ -1,10 +1,13 @@
 "use client";
+import { useRouter } from "next/navigation.js";
 import { useState } from "react";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   async function handleRegister(e) {
     e.preventDefault();
@@ -17,6 +20,8 @@ export default function Register() {
     if (info.error) {
       return setError(info.error);
     }
+    router.push("/");
+    router.refresh();
   }
 
   return (

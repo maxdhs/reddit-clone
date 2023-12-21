@@ -8,6 +8,9 @@ export async function fetchUser() {
     const cookieStore = cookies();
     const userCookie = cookieStore.get("token");
 
+    if (!userCookie) {
+      return {};
+    }
     // we have to determine if the token is valid
     const { userId } = jwt.verify(userCookie.value, process.env.JWT_SECRET);
 
