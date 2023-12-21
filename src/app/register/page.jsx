@@ -4,10 +4,19 @@ import { useState } from "react";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  function handleRegister(e) {
+  async function handleRegister(e) {
     e.preventDefault();
-    console.log(username, password);
+    const response = await fetch("/api/users/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    const info = await response.json();
+    if (info.error) {
+      return setError(info.error);
+    }
   }
 
   return (
@@ -25,6 +34,7 @@ export default function Register() {
           type="password"
         />
         <button>Register</button>
+        <p>{error}</p>
       </form>
     </div>
   );
