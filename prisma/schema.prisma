@@ -17,6 +17,7 @@ model User {
   username   String      @unique
   password   String
   subreddits Subreddit[]
+  posts      Post[]
 }
 
 model Subreddit {
@@ -25,4 +26,16 @@ model Subreddit {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+  posts     Post[]
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  title       String
+  message     String
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
+  subredditId String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
 }
