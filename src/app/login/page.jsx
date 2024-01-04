@@ -5,18 +5,21 @@ import { useState } from "react";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const router = useRouter();
 
   async function handleLogin(e) {
     e.preventDefault();
+    setIsLoading(true);
     const response = await fetch("/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
     const info = await response.json();
+    setIsLoading(false);
     if (info.error) {
       return setError(info.error);
     }
@@ -38,7 +41,9 @@ export default function Login() {
           placeholder="password.."
           type="password"
         />
-        <button>Login</button>
+        <button disabled={isLoading}>
+          {isLoading ? <img src="/spinner.svg" alt="" /> : "Login"}
+        </button>
         <p>{error}</p>
       </form>
     </div>
